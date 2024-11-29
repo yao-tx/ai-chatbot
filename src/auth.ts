@@ -1,6 +1,6 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
-import supabase from "@/lib/supabase";
+import { supabase } from "@/lib/supabase";
 
 export const {
   handlers: { GET, POST },
@@ -11,13 +11,13 @@ export const {
   session: { strategy: "jwt" },
   providers: [
     GoogleProvider({
-      clientId: process.env.AUTH_GOOGLE_ID ?? "",
-      clientSecret: process.env.AUTH_GOOGLE_SECRET ?? "",
+      clientId: process.env.AUTH_GOOGLE_ID,
+      clientSecret: process.env.AUTH_GOOGLE_SECRET,
     }),
   ],
   callbacks: {
     async session({ session }) {
-      const { data, error } = await supabase()
+      const { data, error } = await supabase
         .from("users")
         .select("id")
         .eq("email", session.user.email)
@@ -33,7 +33,7 @@ export const {
         return { ...session, user: { ...session.user, id: data.id } };
       }
 
-      const { data: insertData, error: insertError } = await supabase()
+      const { data: insertData, error: insertError } = await supabase
         .from("users")
         .insert({ email: session.user.email, name: session.user.name })
         .select("id")

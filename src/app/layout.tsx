@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Toaster } from "@/components/ui/toaster";
 import localFont from "next/font/local";
 import "./globals.css";
 
@@ -9,8 +10,8 @@ const geistSans = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "B Capital AI Chabot",
-  description: "B Capital Takehome Test completed by yao-tx",
+  title: "AI Chatbot",
+  description: "AI Chatbot by yao-tx",
 };
 
 export default function RootLayout({
@@ -24,6 +25,7 @@ export default function RootLayout({
         className={`${geistSans.className} antialiased`}
       >
         {children}
+        <Toaster />
       </body>
     </html>
   );
