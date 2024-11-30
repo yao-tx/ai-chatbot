@@ -24,12 +24,7 @@ export const {
         .limit(1)
         .single();
 
-      if (error) {
-        console.error("error retrieving user:", error);
-        throw new Error("failed to retrieve user");
-      }
-
-      if (data?.id) {
+      if (!error && data?.id) {
         return { ...session, user: { ...session.user, id: data.id } };
       }
 

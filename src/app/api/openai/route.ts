@@ -35,6 +35,7 @@ export async function POST(req: NextRequest) {
       }
     )
   } catch (error) {
+    console.log(error);
     if (error instanceof RateLimitError) {
       return new NextResponse(
         JSON.stringify({ error: "Rate limit exceeded" }),
@@ -42,9 +43,9 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    return new NextResponse(JSON.stringify(
-      { error: "Something went wrong" }),
-      { status: 500 }
-    );
+    return new NextResponse(
+      JSON.stringify({ error: "Something went wrong" }),
+      { status: 500,
+    });
   }
 }
