@@ -3,12 +3,14 @@ import { NextRequest, NextResponse } from "next/server";
 import { openai } from "@/lib/openai";
 import { RateLimitError } from "openai";
 
+const OPENAI_MODEL = "gpt-3.5-turbo";
+
 export async function POST(req: NextRequest) {
   try {
     const { prompt } = await req.json();
 
     const stream = await openai.chat.completions.create({
-      model: "gpt-3.5-turbo",
+      model: OPENAI_MODEL,
       messages: [{ role: "user", content: prompt }],
       temperature: 0.7,
       stream: true,
