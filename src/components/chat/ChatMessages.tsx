@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect } from "react";
+import React, { useRef, useEffect } from "react";
 
 import { BotMessageSquare, LoaderPinwheel } from "lucide-react";
 
@@ -15,7 +15,7 @@ type ChatMessagesProps = {
   className?: string;
 }
 
-export function ChatMessages({ messages, isLoading, className }: ChatMessagesProps) {
+export const ChatMessages = React.memo(({ messages, isLoading, className }: ChatMessagesProps) => {
   const loaderRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -67,4 +67,4 @@ export function ChatMessages({ messages, isLoading, className }: ChatMessagesPro
       </div>
     </ScrollArea>
   );
-}
+});
