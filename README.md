@@ -4,14 +4,37 @@ This is a chatbot web application that uses OpenAI's gpt-3.5-turbo model for gen
 
 ## Tech Stack / Dependencies
 
-- Next.js (for the app)
-- Tailwind CSS (for styling)
-- Supabase (for the database)
-- OpenAI (for the AI model)
-- shadcn/ui / Radix UI (for UI components)
-- NextAuth.js (for Authentication)
+- Next.js (App Router)
+- Supabase
+- Auth.js (also known as NextAuth.js)
+- shadcn/ui and Radix UI
+- Tailwind CSS
+- zustand
+- OpenAI
 
 Please note that you are required to have an OpenAI API key to use this app.
+
+## Architectural Details
+
+Next.js is used for the full-stack development of the web app. API routes are used for the interaction wtih the database and the AI model.
+
+For the database, Supabase is used, which is a PostgreSQL-compatible managed database service. There are mainly three tables:
+
+`users` - for storing user information.
+`chat_sessions` - for storing individual chat session information.
+`chat_messages` - for storing the chat messages sent by the user and received from the AI model in a particular chat session.
+
+For `chat_sessions` and `chat_messages`, UUIDv7 is used it's time-sortable property which is useful for indexing.
+
+Authentication is handled using Auth.js, which is a library for authentication in Next.js. Currently, only Google OAuth is implemented.
+
+shadcn/ui is used for the UI components, which uses Radix UI internally.
+
+Tailwind CSS is used for styling.
+
+zustand is used for easy global state management, specifically for the sidebar chat history.
+
+OpenAI is used for the AI model - every prompt submitted by the user is sent to OpenAI's API to generate a response. The web app uses the gpt-3.5-turbo model.
 
 ## Getting Started (Local Development)
 
