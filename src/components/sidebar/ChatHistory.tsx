@@ -81,7 +81,12 @@ export function ChatHistory() {
             </SidebarMenuButton>
           ))
         ) : (
-          <SidebarMenuButton className="text-sm text-muted-foreground list-none" disabled={true}>No chat history found</SidebarMenuButton>
+          <SidebarMenuButton
+            className="text-sm text-muted-foreground list-none"
+            disabled={true}
+          >
+            No chat history found
+          </SidebarMenuButton>
         )
       )}
     </div>
