@@ -1,11 +1,13 @@
 "use client";
 
-import { ChatMessage } from "@/app/types/chat";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { BotMessageSquare, LoaderPinwheel } from "lucide-react";
 import { useRef, useEffect } from "react";
 
+import { BotMessageSquare, LoaderPinwheel } from "lucide-react";
+
 import { cn } from "@/lib/utils";
+import { ScrollArea } from "@/components/ui/scroll-area";
+
+import type { ChatMessage } from "@/app/types/chat";
 
 type ChatMessagesProps = {
   messages: ChatMessage[];
@@ -27,26 +29,29 @@ export function ChatMessages({ messages, isLoading, className }: ChatMessagesPro
       className={cn(
         "flex-1 px-4",
         className,
-    )}
+      )}
     >
       <div className="flex flex-col gap-8">
-        {messages.map((msg, index) => (
-          msg.role === "user" ? (
+        {messages.map((message, index) => (
+          message.role === "user" ? (
             <div
-              key={index}
+              key={message.id ?? index}
               className="bg-neutral-800 text-white py-3 px-5 rounded-3xl self-end ml-auto whitespace-pre-line"
             >
-              {msg.content}
+              {message.message}
             </div>
           ): (
-            <div key={index}className="flex flex-row gap-4 items-start">
+            <div
+              key={message.id ?? index}
+              className="flex flex-row gap-4 items-start"
+            >
               <div className="flex-shrink-0 border border-gray-300 rounded-full items-center justify-center p-2">
                 <BotMessageSquare className="w-5 h-5" />
               </div>
               <div
                 className="bg-transparent self-start w-full whitespace-pre-line"
               >
-                {msg.content}
+                {message.message}
               </div>
             </div>
           )

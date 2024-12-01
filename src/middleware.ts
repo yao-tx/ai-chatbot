@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { auth } from "@/auth";
 
 const publicPaths = ["/login"];
-const authenticatedPaths = ["/"];
+const authenticatedPaths = ["/", "/chat/"];
 
 export default async function middleware(
   request: NextRequest
@@ -18,7 +18,7 @@ export default async function middleware(
         return NextResponse.next();
       }
 
-      if (authenticatedPaths.includes(path)) {
+      if (authenticatedPaths.includes(path) || authenticatedPaths.some(authPath => path.startsWith(authPath))) {
         return NextResponse.redirect(new URL("/login", request.url));
       }
 
@@ -31,6 +31,7 @@ export default async function middleware(
 
     return NextResponse.next();
   } catch (error) {
+    console.error("Error in middleware:", error);
     return NextResponse.rewrite(new URL("/404", request.url));
   }
 }

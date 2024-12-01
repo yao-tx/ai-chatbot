@@ -1,6 +1,7 @@
+import { NextRequest, NextResponse } from "next/server";
+
 import { openai } from "@/lib/openai";
 import { RateLimitError } from "openai";
-import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
   try {
@@ -31,21 +32,19 @@ export async function POST(req: NextRequest) {
         headers: {
           "Content-Type": "text/plain",
           "Transfer-Encoding": "chunked",
-        }
+        },
       }
-    )
+    );
   } catch (error) {
-    console.log(error);
     if (error instanceof RateLimitError) {
       return new NextResponse(
-        JSON.stringify({ error: "Rate limit exceeded" }),
+        JSON.stringify({ error: "rate limit exceeded, please check your OpenAI credits" }),
         { status: 429 }
       );
     }
 
-    return new NextResponse(
-      JSON.stringify({ error: "Something went wrong" }),
-      { status: 500,
+    return new NextResponse(JSON.stringify({ error: "unexpected error occurred, please try again later" }), {
+      status: 500,
     });
   }
 }
