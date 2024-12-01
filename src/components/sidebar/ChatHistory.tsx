@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 import { useChatHistoryStore } from "@/stores/chat-history";
-import { SidebarMenuButton } from "@/components/ui/sidebar";
+import { SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
 
@@ -67,18 +67,22 @@ export function ChatHistory() {
           <Skeleton className="h-6 w-full" />
         </div>
       ) : (
-        chatHistory.map((history) => (
-          <SidebarMenuButton
-            key={history.id}
-            type="button"
-            className="justify-start"
-            asChild
-          >
-            <Link href={`/chat/${history.id}`}>
-              <span className="truncate">{history.title}</span>
-            </Link>
-          </SidebarMenuButton>
-        ))
+        chatHistory.length > 0 ? (
+          chatHistory.map((history) => (
+            <SidebarMenuButton
+              key={history.id}
+              type="button"
+              className="justify-start"
+              asChild
+            >
+              <Link href={`/chat/${history.id}`}>
+                <span className="truncate">{history.title}</span>
+              </Link>
+            </SidebarMenuButton>
+          ))
+        ) : (
+          <SidebarMenuButton className="text-sm text-muted-foreground list-none" disabled={true}>No chat history found</SidebarMenuButton>
+        )
       )}
     </div>
   );
