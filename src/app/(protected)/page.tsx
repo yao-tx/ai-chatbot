@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { ChatInput } from "@/components/chat/ChatInput";
+import { useChatHistoryStore } from "@/stores/chat-history";
 import { useToast } from "@/hooks/use-toast";
 
 export default function Home() {
@@ -11,6 +12,7 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const { toast } = useToast();
+  const { triggerRefresh } = useChatHistoryStore();
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -41,6 +43,7 @@ export default function Home() {
       .finally(() => {
         setIsLoading(false);
         setPrompt("");
+        triggerRefresh();
       });
   }
 

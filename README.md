@@ -37,9 +37,19 @@ bun install
 supabase start
 ```
 
-5. Create a `.env` file and add your environment variables. You can use the `.env.example` file as a template.
+This will start the Supabase local development server. Take note of `API URL` and `service_role_key` as you will need them to configure the `.env` file.
 
-6. Run the development server:
+5. Run the following command to create the required database tables:
+
+```bash
+supabse db reset
+```
+
+This will automatically run the migrations in the `supabase/migrations` directory.
+
+6. Create a `.env` file and add your environment variables. You can use the `.env.example` file as a template.
+
+7. Run the development server:
 
 ```bash
 npm run dev
@@ -68,4 +78,4 @@ bun dev
 
 ## Deployment
 
-This project is deployed on Vercel. For more information, visit the [Vercel documentation](https://vercel.com/docs).
+This project is deployed on Vercel. If you are deploying this project, make sure to run the supabase migrations in the `supabase/migrations` directory.

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
+import { useChatHistoryStore } from "@/stores/chat-history";
 import { SidebarMenuButton } from "@/components/ui/sidebar";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
@@ -18,6 +19,7 @@ export function ChatHistory() {
   const [chatHistory, setChatHistory] = useState<ChatHistory[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
+  const { shouldRefresh, resetRefresh } = useChatHistoryStore();
 
   useEffect(() => {
     setIsLoading(true);
@@ -26,7 +28,7 @@ export function ChatHistory() {
       .then((res) => {
         return res.json().then((json) => {
           if (!res.ok) {
-            throw new Error(json?.error || "Something went wrong.");
+            throw new Error(json?.error || "an unexpected error occurred, please try again later");
           }
 
           return json;
@@ -50,8 +52,11 @@ export function ChatHistory() {
           variant: "destructive",
         });
       })
-      .finally(() => setIsLoading(false));
-  }, []);
+      .finally(() => {
+        setIsLoading(false);
+        resetRefresh();
+      });
+  }, [shouldRefresh]);
 
   return (
     <div className="flex flex-col">
