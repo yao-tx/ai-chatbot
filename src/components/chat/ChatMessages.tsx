@@ -15,7 +15,7 @@ type ChatMessagesProps = {
   className?: string;
 }
 
-export const ChatMessages = memo(({ messages, isLoading, className }: ChatMessagesProps) => {
+const ChatMessagesComponent = ({ messages, isLoading, className }: ChatMessagesProps) => {
   const loaderRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -67,4 +67,6 @@ export const ChatMessages = memo(({ messages, isLoading, className }: ChatMessag
       </div>
     </ScrollArea>
   );
-});
+};
+
+export const ChatMessages = memo(ChatMessagesComponent);
