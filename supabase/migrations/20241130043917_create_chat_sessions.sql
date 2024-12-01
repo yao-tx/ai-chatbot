@@ -1,4 +1,4 @@
-CREATE TYPE role_type AS ENUM ('user', 'bot');
+CREATE TYPE role_type AS ENUM ('user', 'assistant');
 
 CREATE TABLE public.chat_sessions (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid_v7(),

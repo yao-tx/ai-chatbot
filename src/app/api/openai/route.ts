@@ -3,15 +3,27 @@ import { NextRequest, NextResponse } from "next/server";
 import { openai } from "@/lib/openai";
 import { RateLimitError } from "openai";
 
+import type { ChatMessage } from "@/app/types/chat";
+
 const OPENAI_MODEL = "gpt-3.5-turbo";
 
 export async function POST(req: NextRequest) {
   try {
-    const { prompt } = await req.json();
+    const { messages } = await req.json();
+
+    const promptMessage = {
+      role: "system",
+      content: "You are AI Chatbot, a helpful assistant that can answer questions and help with tasks.",
+    };
+
+    const messagesToSend = messages.map((message: ChatMessage) => ({
+      role: message.role,
+      content: message.message,
+    }));
 
     const stream = await openai.chat.completions.create({
       model: OPENAI_MODEL,
-      messages: [{ role: "user", content: prompt }],
+      messages: [promptMessage, ...messagesToSend],
       temperature: 0.7,
       stream: true,
     });

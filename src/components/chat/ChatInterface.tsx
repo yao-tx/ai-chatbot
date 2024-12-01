@@ -36,14 +36,14 @@ export function ChatInterface({ chatId, className }: ChatInterfaceProps) {
         }
 
         return json;
-      })
+      });
     })
     .then((data) => {
       const parsedMessages: ChatMessage[] = data.chat_session.chat_messages;
       setMessages(() => [...parsedMessages]);
 
       if (parsedMessages[parsedMessages.length - 1].role === "user") {
-        submitPrompt(parsedMessages[parsedMessages.length - 1].message);
+        submitPrompt(parsedMessages);
       }
     })
     .catch((error) => {
@@ -67,16 +67,16 @@ export function ChatInterface({ chatId, className }: ChatInterfaceProps) {
     e.preventDefault();
     setMessages(prev => [...prev, { role: "user", message: prompt }]);
     saveMessage({ role: "user", message: prompt });
-    submitPrompt(prompt);
+    submitPrompt([...messages, { role: "user", message: prompt }]);
   };
 
-  const submitPrompt = (prompt: string) => {
+  const submitPrompt = (messages: ChatMessage[]) => {
     setPrompt("");
     setIsLoading(true);
 
     fetch("/api/openai", {
       method: "POST",
-      body: JSON.stringify({ prompt }),
+      body: JSON.stringify({ messages }),
     })
       .then((res) => {
         if (!res.ok) {
@@ -87,12 +87,12 @@ export function ChatInterface({ chatId, className }: ChatInterfaceProps) {
           const reader = res?.body?.getReader();
           const decoder = new TextDecoder();
           let botResponse = "";
-          setMessages(prev => [...prev, { role: "bot", message: botResponse }]);
+          setMessages(prev => [...prev, { role: "assistant", message: botResponse }]);
 
           function readChunk() {
             reader?.read().then(({ done, value }) => {
               if (done) {
-                saveMessage({ role: "bot", message: botResponse });
+                saveMessage({ role: "assistant", message: botResponse });
                 return;
               }
 
@@ -100,7 +100,7 @@ export function ChatInterface({ chatId, className }: ChatInterfaceProps) {
               botResponse += chunk;
 
               setMessages(prev => {
-                return [...prev.slice(0, -1), { role: "bot", message: botResponse }];
+                return [...prev.slice(0, -1), { role: "assistant", message: botResponse }];
               })
 
               readChunk();
