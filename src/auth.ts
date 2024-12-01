@@ -35,7 +35,6 @@ export const {
         .single();
 
       if (insertError) {
-        console.error("failed to add user:", insertError);
         throw new Error("failed to add user");
       }
 
